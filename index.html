@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funto's Fabulous 50th — RSVP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fraunces:ital,wght@1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7F77DD;
+      --pink: #D4537E;
+      --coral: #D85A30;
+      --gold: #FAC775;
+      --white: #ffffff;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0e0b1a;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(127,119,221,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(212,83,126,0.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .confetti-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .confetti-dot {
+      position: absolute;
+      border-radius: 50%;
+      animation: float linear infinite;
+      opacity: 0.4;
+    }
+    @keyframes float {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.4; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    .rsvp-card {
+      background: rgba(255,255,255,0.04);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      animation: fadeUp 0.8s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #7F77DD 0%, #D4537E 55%, #D85A30 100%);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: -40px;
+      width: 180px; height: 180px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+    }
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -30px;
+      width: 220px; height: 220px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .fifty-badge {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 100px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.12);
+      line-height: 1;
+      position: absolute;
+      top: 0.25rem;
+      right: 1rem;
+      z-index: 0;
+      user-select: none;
+    }
+    .header-content { position: relative; z-index: 1; }
+    .you-are-invited {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.75);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .party-name {
+      font-family: 'Pacifico', cursive;
+      font-size: 30px;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      line-height: 1.25;
+    }
+    .party-subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 300;
+      margin-bottom: 1.25rem;
+    }
+    .dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    .card-body { padding: 1.75rem 2rem; }
+
+    .event-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 1.75rem;
+    }
+    .detail-block {
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      transition: background 0.2s;
+    }
+    .detail-block:hover { background: rgba(255,255,255,0.1); }
+    .detail-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 5px;
+    }
+    .detail-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.92);
+    }
+    .detail-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+
+    .divider {
+      height: 0.5px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 0 1.75rem;
+    }
+
+    .rsvp-prompt {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .name-input {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      background: rgba(255,255,255,0.07);
+      border: 0.5px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .name-input::placeholder { color: rgba(255,255,255,0.3); }
+    .name-input:focus {
+      border-color: rgba(127,119,221,0.7);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .btn-accept {
+      padding: 0.85rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #7F77DD, #D4537E);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-accept:hover { opacity: 0.88; }
+    .btn-accept:active { transform: scale(0.97); }
+    .btn-decline {
+      padding: 0.85rem;
+      border-radius: 12px;
+      border: 0.5px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-decline:hover { background: rgba(255,255,255,0.07); }
+    .btn-decline:active { transform: scale(0.97); }
+
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      animation: fadeUp 0.4s ease both;
+    }
+    .success-icon {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7F77DD, #D4537E);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.9rem;
+      font-size: 22px;
+      color: #fff;
+    }
+    .success-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 5px;
+    }
+    .success-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .whatsapp-note {
+      margin-top: 1.25rem;
+      font-size: 11px;
+      color: rgba(255,255,255,0.28);
+      text-align: center;
+      border-top: 0.5px solid rgba(255,255,255,0.08);
+      padding-top: 1rem;
+    }
+
+    @media (max-width: 400px) {
+      .party-name { font-size: 24px; }
+      .card-body { padding: 1.5rem; }
+      .btn-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confetti-bg" id="confetti-bg"></div>
+
+  <div class="page-wrap">
+    <div class="rsvp-card">
+      <div class="card-header">
+        <span class="fifty-badge">50</span>
+        <div class="header-content">
+          <p class="you-are-invited">You are invited</p>
+          <h1 class="party-name">Funto's Fabulous 50th</h1>
+          <p class="party-subtitle">A night to celebrate, dance &amp; remember</p>
+          <div class="dots-row">
+            <div class="dot" style="background:#FAC775"></div>
+            <div class="dot" style="background:rgba(255,255,255,0.7)"></div>
+            <div class="dot" style="background:#ED93B1"></div>
+            <div class="dot" style="background:#FAC775"></div>
+            <div class="dot" style="background:#AFA9EC"></div>
+            <div class="dot" style="background:rgba(255,255,255,0.7)"></div>
+            <div class="dot" style="background:#F0997B"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="event-details">
+          <div class="detail-block">
+            <div class="detail-label">Date</div>
+            <div class="detail-value">25th July 2026</div>
+            <div class="detail-sub">Saturday</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">Bracknell</div>
+            <div class="detail-sub">United Kingdom</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-label">Time</div>
+            <div class="detail-value">5:00 PM</div>
+            <div class="detail-sub">Until late</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-label">Dress code</div>
+            <div class="detail-value">Vibrant &amp; bold</div>
+            <div class="detail-sub">Wear your colours</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="form-area">
+          <p class="rsvp-prompt">Please let us know if you can make it</p>
+          <input class="name-input" type="text" id="guest-name" placeholder="Your name" />
+          <div class="btn-row">
+            <button class="btn-accept" onclick="sendRSVP('accept')">Joyfully accept</button>
+            <button class="btn-decline" onclick="sendRSVP('decline')">Regretfully decline</button>
+          </div>
+        </div>
+
+        <div class="success-msg" id="success-area">
+          <div class="success-icon">&#10003;</div>
+          <div class="success-title" id="success-title">Wonderful! See you there.</div>
+          <div class="success-sub" id="success-sub">Your RSVP is on its way to Funto via WhatsApp.</div>
+        </div>
+
+        <div class="whatsapp-note" id="wa-note">
+          Clicking accept will open WhatsApp with a pre-filled message
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const colours = ['#FAC775','#ED93B1','#AFA9EC','#F0997B','#ffffff','#5DCAA5'];
+    const bg = document.getElementById('confetti-bg');
+    for (let i = 0; i < 28; i++) {
+      const d = document.createElement('div');
+      d.className = 'confetti-dot';
+      const size = Math.random() * 8 + 4;
+      d.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random() * 100}%;
+        background:${colours[Math.floor(Math.random()*colours.length)]};
+        animation-duration:${Math.random()*20+15}s;
+        animation-delay:${Math.random()*15}s;
+      `;
+      bg.appendChild(d);
+    }
+
+    function sendRSVP(type) {
+      const name = document.getElementById('guest-name').value.trim() || 'A guest';
+      const phone = '447852420930';
+
+      if (type === 'accept') {
+        const msg = encodeURIComponent(`Hi Funto! It's ${name} — I'm RSVP-ing YES to your fabulous 50th on 25th July in Bracknell! Can't wait to celebrate with you at 5PM!`);
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        document.getElementById('success-title').textContent = 'Wonderful! See you there.';
+        document.getElementById('success-sub').textContent = 'Your RSVP is on its way to Funto via WhatsApp.';
+      } else {
+        const msg = encodeURIComponent(`Hi Funto — it's ${name}. I'm so sorry I can't make your 50th on 25th July, but wishing you the most amazing celebration!`);
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        document.getElementById('success-title').textContent = "You'll be missed!";
+        document.getElementById('success-sub').textContent = 'A message is being sent to Funto. Hope to see you soon.';
+      }
+
+      document.getElementById('form-area').style.display = 'none';
+      document.getElementById('success-area').style.display = 'block';
+      document.getElementById('wa-note').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
