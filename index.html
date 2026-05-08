@@ -27,6 +27,7 @@
       overflow-x: hidden;
     }
 
+    /* Decorative background orbs */
     body::before {
       content: '';
       position: fixed;
@@ -53,6 +54,7 @@
       max-width: 520px;
     }
 
+    /* Floating confetti dots */
     .confetti-bg {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -86,6 +88,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* Header */
     .card-header {
       background: linear-gradient(135deg, #7F77DD 0%, #D4537E 55%, #D85A30 100%);
       padding: 2.5rem 2rem 2rem;
@@ -137,7 +140,7 @@
       font-weight: 400;
       color: #fff;
       margin-bottom: 0.3rem;
-      line-height: 1.25;
+      line-height: 1.15;
     }
     .party-subtitle {
       font-size: 14px;
@@ -155,6 +158,7 @@
       border-radius: 50%;
     }
 
+    /* Body */
     .card-body { padding: 1.75rem 2rem; }
 
     .event-details {
@@ -255,6 +259,7 @@
     .btn-decline:hover { background: rgba(255,255,255,0.07); }
     .btn-decline:active { transform: scale(0.97); }
 
+    /* Success state */
     .success-msg {
       display: none;
       text-align: center;
@@ -293,7 +298,7 @@
     }
 
     @media (max-width: 400px) {
-      .party-name { font-size: 24px; }
+      .party-name { font-size: 26px; }
       .card-body { padding: 1.5rem; }
       .btn-row { grid-template-columns: 1fr; }
     }
@@ -301,6 +306,7 @@
 </head>
 <body>
 
+  <!-- Floating confetti -->
   <div class="confetti-bg" id="confetti-bg"></div>
 
   <div class="page-wrap">
@@ -356,6 +362,16 @@
         <div id="form-area">
           <p class="rsvp-prompt">Please let us know if you can make it</p>
           <input class="name-input" type="text" id="guest-name" placeholder="Your name" />
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+            <label style="font-size:13px;color:rgba(255,255,255,0.55);white-space:nowrap;">Bringing a +1?</label>
+            <div style="display:flex;gap:8px;flex:1;">
+              <button id="plus1-no" onclick="setPlus1(false)" class="plus1-btn plus1-active" style="flex:1;padding:0.55rem;border-radius:10px;border:0.5px solid rgba(255,255,255,0.2);background:rgba(127,119,221,0.35);color:rgba(255,255,255,0.85);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;">Just me</button>
+              <button id="plus1-yes" onclick="setPlus1(true)" class="plus1-btn" style="flex:1;padding:0.55rem;border-radius:10px;border:0.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.45);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.15s;">+1 Guest</button>
+            </div>
+          </div>
+          <div id="plus1-name-wrap" style="display:none;margin-bottom:1rem;">
+            <input class="name-input" style="margin-bottom:0;" type="text" id="plus1-name" placeholder="Your guest's name (optional)" />
+          </div>
           <div class="btn-row">
             <button class="btn-accept" onclick="sendRSVP('accept')">Joyfully accept</button>
             <button class="btn-decline" onclick="sendRSVP('decline')">Regretfully decline</button>
@@ -376,6 +392,7 @@
   </div>
 
   <script>
+    // Floating confetti dots
     const colours = ['#FAC775','#ED93B1','#AFA9EC','#F0997B','#ffffff','#5DCAA5'];
     const bg = document.getElementById('confetti-bg');
     for (let i = 0; i < 28; i++) {
@@ -392,14 +409,39 @@
       bg.appendChild(d);
     }
 
+    let bringingPlus1 = false;
+
+    function setPlus1(val) {
+      bringingPlus1 = val;
+      document.getElementById('plus1-name-wrap').style.display = val ? 'block' : 'none';
+      const yes = document.getElementById('plus1-yes');
+      const no  = document.getElementById('plus1-no');
+      if (val) {
+        yes.style.background = 'rgba(212,83,126,0.35)';
+        yes.style.color = 'rgba(255,255,255,0.85)';
+        no.style.background = 'transparent';
+        no.style.color = 'rgba(255,255,255,0.45)';
+      } else {
+        no.style.background = 'rgba(127,119,221,0.35)';
+        no.style.color = 'rgba(255,255,255,0.85)';
+        yes.style.background = 'transparent';
+        yes.style.color = 'rgba(255,255,255,0.45)';
+      }
+    }
+
     function sendRSVP(type) {
       const name = document.getElementById('guest-name').value.trim() || 'A guest';
+      const plus1Name = document.getElementById('plus1-name')?.value.trim();
       const phone = '447852420930';
+      let plusLine = '';
+      if (bringingPlus1) {
+        plusLine = plus1Name ? ` I'll also be bringing ${plus1Name} as my +1.` : ' I\'ll also be bringing a +1.';
+      }
 
       if (type === 'accept') {
-        const msg = encodeURIComponent(`Hi Funto! It's ${name} — I'm RSVP-ing YES to your fabulous 50th on 25th July in Bracknell! Can't wait to celebrate with you at 6PM!`);
+        const msg = encodeURIComponent(`Hi Funto! It's ${name} — I'm RSVP-ing YES to your fabulous 50th on 25th July in Bracknell! Can't wait to celebrate with you at 6PM!${plusLine}`);
         window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-        document.getElementById('success-title').textContent = 'Wonderful! See you there.';
+        document.getElementById('success-title').textContent = bringingPlus1 ? 'Amazing — see you both there!' : 'Wonderful! See you there.';
         document.getElementById('success-sub').textContent = 'Your RSVP is on its way to Funto via WhatsApp.';
       } else {
         const msg = encodeURIComponent(`Hi Funto — it's ${name}. I'm so sorry I can't make your 50th on 25th July, but wishing you the most amazing celebration!`);
